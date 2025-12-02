@@ -14,10 +14,20 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const app = express()
+// Railway cung cấp PORT qua biến môi trường
 const PORT = process.env.PORT || 4000
+
+// --- BƯỚC KHẮC PHỤC LỖI RATE LIMIT TẠI ĐÂY ---
+// Cấu hình Express tin tưởng Proxy. Railway sử dụng 1 lớp Proxy duy nhất.
+// Hoặc có thể dùng 'loopback' hoặc 'uniquelocal' tùy môi trường.
+// Đối với hầu hết các nền tảng cloud, giá trị '1' hoặc 'trust proxy' là đủ.
+app.set('trust proxy', 1) 
+// ---------------------------------------------
+
 
 app.use(cors())
 app.use(express.json({ limit: '2mb' }))
+// Rate Limit Middleware
 app.use(rateLimit)
 
 // Temp uploads folder for audio files
@@ -39,5 +49,6 @@ app.post('/api/upload', upload.single('audio'), (req, res) => {
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')))
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`)
+  // Thay đổi console log để hiển thị cổng thực tế được sử dụng
+  console.log(`Server running on port ${PORT}`) 
 })
