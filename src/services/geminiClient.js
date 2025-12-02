@@ -250,4 +250,4 @@ export async function assessTranscript(
 }
 
 // For unit tests you can import and mock axios to simulate responses.
-export default { assessTranscript, chatTutor }
+export default { assessTranscript }
