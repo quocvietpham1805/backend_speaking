@@ -52,3 +52,17 @@ app.listen(PORT, () => {
   // Thay đổi console log để hiển thị cổng thực tế được sử dụng
   console.log(`Server running on port ${PORT}`) 
 })
+
+// --- BẮT LỖI CHUNG ĐỂ NGĂN TIẾN TRÌNH CRASH MÀ KHÔNG GHI LOG ---
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+    // Vấn đề: Nếu đây là lỗi nghiêm trọng, ta vẫn phải thoát.
+    // process.exit(1); 
+});
+
+process.on('uncaughtException', err => {
+    console.error('Uncaught Exception thrown:', err);
+    // Vấn đề: Nếu đây là lỗi nghiêm trọng, ta vẫn phải thoát.
+    // process.exit(1); 
+});
+// -------------------------------------------------------------
